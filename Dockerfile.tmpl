@@ -1,0 +1,23 @@
+FROM selenoid/chrome:@@VERSION@@
+
+USER root
+
+RUN \
+	apt-get update && \
+	apt-get -y --no-install-recommends install x11vnc && \
+	apt-get clean && \
+	rm -Rf /tmp/*
+
+RUN wget https://pypi.python.org/packages/1e/8e/40c71faa24e19dab555eeb25d6c07efbc503e98b0344f0b4c3131f59947f/vnc2flv-20100207.tar.gz\#md5\=8492e46496e187b49fe5569b5639804e
+
+RUN tar zxf vnc2flv-20100207.tar.gz
+
+RUN cd vnc2flv-20100207
+
+RUN python setup.py install --prefix=/usr/local
+
+RUN flvrec.py -o test-recording.flv
+
+USER selenium
+
+COPY entrypoint.sh /
