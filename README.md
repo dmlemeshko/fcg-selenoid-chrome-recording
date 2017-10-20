@@ -1,0 +1,1 @@
+# fcg-selenoid-chrome-recording
